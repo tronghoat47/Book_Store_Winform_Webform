@@ -1,0 +1,93 @@
+﻿@using BookLibrary.DataAccess
+@model Account
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Book book = @ViewBag.book as Book;
+}
+
+<h3 style="color:green">@TempData["Add"]</h3>
+<h1>Details</h1>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            BookName
+        </dt>
+        <dd class = "col-sm-10">
+            @book.BookName
+        </dd>
+        <dt class = "col-sm-2">
+            Author
+        </dt>
+        <dd class = "col-sm-10">
+            @book.Author
+        </dd>
+        <dt class = "col-sm-2">
+            Title
+        </dt>
+        <dd class = "col-sm-10">
+            @book.Title
+        </dd>
+        <dt class = "col-sm-2">
+            Describe
+        </dt>
+        <dd class = "col-sm-10">
+            @book.Describe
+        </dd>
+        <dt class = "col-sm-2">
+            Price
+        </dt>
+        <dd class = "col-sm-10">
+            @book.Price
+        </dd>
+        <dt class = "col-sm-2">
+            Discount
+        </dt>
+        <dd class = "col-sm-10">
+            @book.Discount
+        </dd>
+        <dt class = "col-sm-2">
+            ReleaseDate
+        </dt>
+        <dd class = "col-sm-10">
+            @book.ReleaseDate
+        </dd>
+        <dt class = "col-sm-2">
+            CategoryId
+        </dt>
+        <dd class = "col-sm-10">
+            @book.CategoryId
+        </dd>
+        <dt class = "col-sm-2">
+            Sold
+        </dt>
+        <dd class = "col-sm-10">
+            @book.Sold
+        </dd>
+        <dt class = "col-sm-2">
+            RatingPoint
+        </dt>
+        <dd class = "col-sm-10">
+            @book.RatingPoint
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (Model != null && Model.RoleId == 1) {
+        @Html.ActionLink("Edit", "Edit", new {  id = @book.BookId  })
+    }
+    @if (Model != null && Model.RoleId != 1)
+    {
+        <form method="post" action="/Cart/Add/@book.BookId">
+            <input type="hidden" name="bookId" value="@book.BookId"/>
+            <input type="number" name="quantity" value="1" min="1"/>
+            <input type="submit" value="Add to card"/>
+        </form>
+    }
+    <br />
+    <a asp-action="List">Back to List</a>
+</div>

@@ -1,0 +1,143 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using BookLibrary.DataAccess
+@model Account
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+@if(Model != null)
+{
+    <a href="/Profile/Edit/@Model.AccountId">@Model.Username</a>
+    
+    <br />
+    @if(Model.RoleId==2)
+    {
+        <a href="/Cart/List/@Model.AccountId">Cart</a>
+        <br />
+        <a href="/Order/List/@Model.AccountId">History order</a>
+        <br />
+    }
+    
+    <a href="/Authentication/Logout">Logout</a>
+}
+<hr />
+@if(Model == null)
+{
+    <a href="/Authentication/Signin">Login</a>
+}
+
+
+
+
+@using (Html.BeginForm("List", "Books", FormMethod.Get))
+{
+
+    <div>
+        <label for="categoryId">Filter by Category:</label>
+        <select id="categoryId" name="categoryId">
+            <option value="">All Categories</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.CategoryId">@category.CategoryName</option>
+            }
+        </select>
+
+        <input type="text" name="bookName" placeholder="Enter book name..">
+        <button type="submit">Search</button>
+    </div>
+}
+
+<hr />
+
+<h1>List Books</h1>
+@if(Model != null && Model.RoleId==1)
+{
+    <h3><a href="/Books/Create">Add new</a></h3>
+}
+<h3 style="color:green">@TempData["Add"]</h3>
+<h3 style="color:green">@TempData["Delete"]</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                BookName
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Discount
+            </th>
+            <th>
+               ReleaseDate
+            </th>
+            <th>
+                Sold
+            </th>
+            <th>
+                RatingPoint
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Book item in @ViewBag.ListBook)
+        {
+            <tr>
+                <td>
+                    @item.BookName
+                </td>
+
+                <td>
+                    @item.Author
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Discount
+                </td>
+                <td>
+                    @item.ReleaseDate
+                </td>
+                <td>
+                    @item.Sold
+                </td>
+                <td>
+                    @item.RatingPoint
+                </td>
+                <td>
+                    <a href="/Books/Details/@item.BookId">
+                        View
+                    </a>
+                    @if (Model != null && Model.RoleId == 1)
+                    {
+                        <a href="/Books/Delete/@item.BookId">Delete </a>
+                        <a href="/Books/Edit/@item.BookId">Edit </a>
+                    }
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>

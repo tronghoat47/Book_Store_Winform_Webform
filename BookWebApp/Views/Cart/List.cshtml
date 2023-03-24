@@ -1,0 +1,50 @@
+﻿@using BookLibrary.DataAccess
+@model Tuple<IEnumerable<CartDetail>, Cart>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>List Product In Cart</h1>
+@if (TempData["Success"] != null)
+{
+    <h3 style="color:green">@TempData["Success"]</h3>
+    
+}else {
+    <h3 style="color:red">@ViewBag.Non</h3>
+}
+
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    BookId
+                </th>
+                <th>
+                    Quantity
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Item1)
+            {
+                <tr>
+                    <td>
+                        @item.BookId
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3 style="color:green">Total money: $@Model.Item2.TotalMoney</h3>
+    <h3> <a href="/Order/Purchase/@Model.Item2.AccountId">Purchase</a></h3>
+}
+
+
